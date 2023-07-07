@@ -1,9 +1,13 @@
 
 from client.game import Game
-from client.scenes.menu import Menu
+from client.manejadorScenas.uiManager import UiManager
+from client.scenes.menuScene import MenuScene
+from client.scenes.menuController import MenuController
+
 def main():
     game = Game()
-    game.changeScene(Menu())
+    manager = UiManager(game)
+    manager.changeTo('inicio')
     game.start()
 
 if (__name__ == "__main__"):

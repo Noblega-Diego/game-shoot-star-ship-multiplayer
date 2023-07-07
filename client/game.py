@@ -24,8 +24,15 @@ class Game(DirectorGame[Scene]):
             for event in pygame.event.get(pygame.QUIT):
                 if (event.type == pygame.QUIT):
                     self.__flag_run = False
+                    
             if self.get_scene():
-                pygame.display.update()
+                self.get_scene().activeEventStart()
+                for event in pygame.event.get():
+                    self.get_scene().event(event)
+                self.get_scene().update()
+                self.get_scene().draw(self.__surface)
+            pygame.display.update()
+            
         pygame.quit()
         sys.exit()
 
