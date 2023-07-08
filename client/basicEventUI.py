@@ -12,16 +12,11 @@ class EventUI():
     def get_type(self):
         return self.type
 
-    def equalsTo(self, origin, type):
-        if(self.get_source() == origin and self.type == type):
-            return True
+    def equalsTo(self, origin, type = None):
+        if(type is None):
+            return (self.get_source() == origin)
         else:
-            return False
-    def equalsTo(self, origin):
-        if(self.get_source() == origin):
-            return True
-        else:
-            return False
+            return (self.get_source() == origin and self.type == type)
 
 #Escuchador de evento
 class ListeinerEventUI(ABC):

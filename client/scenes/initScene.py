@@ -30,6 +30,9 @@ class InitScene(SceneAppendListeiner):
             if (isinstance(elemts, ElementUI)):
                 elemts.draw(surface)
 
+    def end(self):
+        self.resetInit()
+
 
 class TimeElement(ElementActive):
     def __init__(self):
@@ -39,6 +42,9 @@ class TimeElement(ElementActive):
         self.__active = False
 
     def update(self):
+        print(self.__active)
+        print(self.__timeActive)
+        print(self.__temporizar.getStatus())
         if((not self.__active) and (self.__timeActive > 0) and (self.__timeActive < self.__temporizar.getStatus())):
             self.__active = True
             self._lunchEvent("Ftime")

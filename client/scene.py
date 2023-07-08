@@ -9,8 +9,9 @@ class Scene(ABC):
     def activeEventStart(self):
         if(not(self.__init)):
             self.__init = True
-            self.start()
             print(self.__class__)
+            self.start()
+            
 
     @abstractmethod
     def start(self):
@@ -28,8 +29,17 @@ class Scene(ABC):
     def draw(self, surface):
         pass
 
+    @abstractmethod
+    def end(self):
+        pass
+
     def isInit(self):
         return self.__init
+    
+    def resetInit(self):
+        self.__init = False
+    
+    
 
 class SceneAppendListeiner(Scene):
 

@@ -20,6 +20,7 @@ class Button(ElementUI):
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == pygame.BUTTON_LEFT:
                 mousePos = pygame.mouse.get_pos()
                 if(self.__rect.collidepoint(mousePos)):
+                    print("coll")
                     self._lunchEvent('click')
 
     def update(self):
