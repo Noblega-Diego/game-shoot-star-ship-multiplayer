@@ -1,18 +1,28 @@
 
 
-from client.basicEventUI import ElementUI
+from client.basicEventUI import ElementUI, Update
 from client.scene import Scene,SceneAppendListeiner
-from client.uiElements.button import Button
+from client.uiElements.button import Button, ButtonText
+from client.utilsElemets.basicBackGround import BasicBackGround
 
 
 class MenuScene(SceneAppendListeiner):
     
     def __init__(self):
         super().__init__()
-        self.EButtonToLoby:Button = self.addObjectsEvents(Button(pos=[10,10], size=[200,40]))
+        self.Background = self.addObjectsEvents(BasicBackGround()
+                                                .setDimencion((1200,800))
+                                                .setImage('client/assets/imageMenu.jpg'))
+        self.EButtonToLoby = self.addObjectsEvents(ButtonText()
+                                                .setSize(25)
+                                                .set_size([250.,40])
+                                                .setText("Play")
+                                                .set_pos([50,50]))
+        from client.globalContext import GlobalContext
+        self.__context = GlobalContext()
         
     def start(self):
-        pass
+        self.__context.getUiMause().setImage('client/assets/imageMenu.jpg')
 
     def event(self, event):
         for elemts in self.getObjectsEvents():
@@ -21,7 +31,8 @@ class MenuScene(SceneAppendListeiner):
 
     def update(self):
         for elemts in self.getObjectsEvents():
-            elemts.update()
+            if (isinstance(elemts, Update)):
+                elemts.update()
 
     def draw(self, surface):
         for elemts in self.getObjectsEvents():

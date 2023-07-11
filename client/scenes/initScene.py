@@ -1,20 +1,27 @@
 
 
-from client.basicEventUI import ElementActive, ElementUI
+
+from client.basicEventUI import Draw, ElementActive, ElementUI
 from client.scene import Scene,SceneAppendListeiner
 from client.uiElements.button import Button
 from client.utils.Temporizador import Temporizar
+from client.utilsElemets.basicBackGround import BasicBackGround
 
 
 class InitScene(SceneAppendListeiner):
     
     def __init__(self):
         super().__init__()
-        self.Etime:TimeElement = self.addObjectsEvents(TimeElement())
+        self.Background = self.addObjectsEvents(BasicBackGround()
+                                                .setImage('client/assets/space.png'))
+        self.Etime = self.addObjectsEvents(TimeElement())
+        from client.globalContext import GlobalContext
+        self.__context = GlobalContext()
         
     def start(self):
         self.Etime.setTimeActive(5000)
         self.Etime.startTime()
+        self.__context.getUiMause().setImage('client/assets/sprite_nave.png')
     
     def event(self, event):
         for elemts in self.getObjectsEvents():
@@ -27,7 +34,7 @@ class InitScene(SceneAppendListeiner):
 
     def draw(self, surface):
         for elemts in self.getObjectsEvents():
-            if (isinstance(elemts, ElementUI)):
+            if (isinstance(elemts, Draw)):
                 elemts.draw(surface)
 
     def end(self):

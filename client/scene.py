@@ -2,6 +2,9 @@
 from abc import ABC,abstractmethod
 
 from client.basicEventUI import ElementActive, ListeinerEventUI
+from typing import TypeVar
+
+T = TypeVar('T')
 
 class Scene(ABC):
     __init = False
@@ -39,7 +42,9 @@ class Scene(ABC):
     def resetInit(self):
         self.__init = False
     
-    
+ 
+
+
 
 class SceneAppendListeiner(Scene):
 
@@ -47,7 +52,7 @@ class SceneAppendListeiner(Scene):
         super().__init__()
         self.__ObjectEvents:list[ElementActive] = []
 
-    def addObjectsEvents(self, element:ElementActive):
+    def addObjectsEvents(self, element:T)->T:
         self.__ObjectEvents.append(element)
         return element
 

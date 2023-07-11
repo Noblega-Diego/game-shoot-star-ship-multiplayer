@@ -12,8 +12,8 @@ class UiManager(ManagerScenes):
 
     def __init__(self, game: DirectorGame) -> None:
         super().__init__(game)
-        self._addScene("home", MenuController(MenuScene(), self).getScene())
-        self._addScene("inicio", InitController(InitScene(), self).getScene())
+        self._addScene("home", MenuController(MenuScene()).getScene())
+        self._addScene("inicio", InitController(InitScene()).getScene())
 
 
     

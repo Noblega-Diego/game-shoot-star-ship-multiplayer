@@ -2,13 +2,17 @@
 import abc
 from typing import Generic, List, TypeVar
 
+from traitlets import Type
+
 T = TypeVar("T")
+C = TypeVar("C")
 
 
-class DirectorGame(abc.ABC,Generic[T]):
+class DirectorGame(abc.ABC, Generic[T]):
 
     def __init__(self):
         self.__scene:T = None
+        self.__context:C = None
 
     @abc.abstractmethod
     def runGame(self):

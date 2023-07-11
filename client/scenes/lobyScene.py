@@ -1,13 +1,13 @@
 
 
-from client.scene import Scene
+from client.scene import SceneAppendListeiner
 
 
-class Loby(Scene):
+class LobyScene(SceneAppendListeiner):
     def __init__(self):
         super().__init__()
 
-    def event(self):
+    def event(self, event):
         pass
 
     def update(self):

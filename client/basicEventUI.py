@@ -28,9 +28,21 @@ class ListeinerEventUI(ABC):
     def getScene(self):
         pass
     
+class Update(ABC):  
 
+    @abstractmethod
+    def update(self):
+        pass    
+
+class Draw(Update, ABC):
+
+    @abstractmethod
+    def draw(self, surface):
+        pass  
+
+    
 #Iniciador del evento
-class ElementActive():
+class ElementActive(Update):
     def __init__(self):
         self.__listeinertsEvent: List[ListeinerEventUI] = []
 
@@ -47,7 +59,9 @@ class ElementActive():
     def update(self):
         pass
 
-class ElementUI(ElementActive):
+
+
+class ElementUI(ElementActive, Draw):
     def __init__(self):
         super().__init__()
 
