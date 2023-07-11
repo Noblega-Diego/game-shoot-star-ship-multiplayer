@@ -4,7 +4,7 @@ from client.basicEventUI import ElementUI, Update
 from client.scene import Scene,SceneAppendListeiner
 from client.uiElements.button import Button, ButtonText
 from client.utilsElemets.basicBackGround import BasicBackGround
-
+from client.uiElements.uiPunterConst import UIPUNTER_OFFSET_MIND
 
 class MenuScene(SceneAppendListeiner):
     
@@ -22,7 +22,7 @@ class MenuScene(SceneAppendListeiner):
         self.__context = GlobalContext()
         
     def start(self):
-        self.__context.getUiMause().setImage('client/assets/imageMenu.jpg')
+        self.__context.getUiMause().setImage(None).setVisibleMouse(True)
 
     def event(self, event):
         for elemts in self.getObjectsEvents():

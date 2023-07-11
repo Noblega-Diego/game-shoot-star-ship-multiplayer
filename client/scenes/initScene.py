@@ -3,9 +3,9 @@
 
 from client.basicEventUI import Draw, ElementActive, ElementUI
 from client.scene import Scene,SceneAppendListeiner
-from client.uiElements.button import Button
 from client.utils.Temporizador import Temporizar
 from client.utilsElemets.basicBackGround import BasicBackGround
+from client.uiElements.uiPunterConst import UIPUNTER_OFFSET_MIND
 
 
 class InitScene(SceneAppendListeiner):
@@ -21,7 +21,7 @@ class InitScene(SceneAppendListeiner):
     def start(self):
         self.Etime.setTimeActive(5000)
         self.Etime.startTime()
-        self.__context.getUiMause().setImage('client/assets/sprite_nave.png')
+        self.__context.getUiMause().setImage('client/assets/pointb.png').setOffset(UIPUNTER_OFFSET_MIND).setVisibleMouse(False)
     
     def event(self, event):
         for elemts in self.getObjectsEvents():
