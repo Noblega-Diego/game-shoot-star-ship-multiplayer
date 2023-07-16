@@ -1,5 +1,5 @@
-import functools
-
+from client.director import DirectorGame
+from client.inputController.inputHandler import InputHandle
 from client.manejadorScenas.uiManager import UiManager
 from client.uiElements.uiPunter import UiPunter
 
@@ -8,6 +8,7 @@ class GlobalContext(object):
         self.__game = game
         self.__uiPunter = UiPunter().setImage('client/assets/sprite_nave.png')
         self.__sceneManager = UiManager(self.__game)
+        self.__inputHandler = InputHandle(self)
         return self
 
     def __new__(cls):
@@ -21,6 +22,8 @@ class GlobalContext(object):
     def getSceneManager(self) -> UiManager:
         return self.__sceneManager
 
-    def getDirectorGame(self):
+    def getDirectorGame(self)-> DirectorGame:
         return self.__game
 
+    def getInputHandler(self):
+        return self.__inputHandler

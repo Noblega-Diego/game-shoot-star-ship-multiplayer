@@ -3,6 +3,7 @@ import sys
 
 from client.director import DirectorGame
 from client.globalContext import GlobalContext
+from client.inputController.uiMainInputMap import UiMainInputMap
 from client.scene import Scene
 
 class Game(DirectorGame[Scene]):
@@ -17,19 +18,20 @@ class Game(DirectorGame[Scene]):
     def start(self):
         self.__flag_run = True
         self.__context.getSceneManager().changeTo('inicio')
+        self.__context.getInputHandler().changeInputMap(UiMainInputMap())
         self.runGame()
+
+    def exit(self):
+        self.__flag_run = False
 
     def runGame(self):
         clock = pygame.time.Clock()
         while self.__flag_run:
             clock.tick(30)  #se setea a 30fps
-            for event in pygame.event.get(pygame.QUIT):
-                if (event.type == pygame.QUIT):
-                    self.__flag_run = False
-                    
             if self.get_scene():
                 self.get_scene().activeEventStart()
                 for event in pygame.event.get():
+                    self.__context.getInputHandler().handleInput(event).ejecute()
                     self.get_scene().event(event)
                 self.__context.getUiMause().update()
                 self.get_scene().update()

@@ -1,7 +1,6 @@
 
 from typing import Type
 from client.director import DirectorGame
-from client.scene import Scene 
 
 
 class ManagerScenes():

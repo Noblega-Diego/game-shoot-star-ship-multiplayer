@@ -12,7 +12,6 @@ class DirectorGame(abc.ABC, Generic[T]):
 
     def __init__(self):
         self.__scene:T = None
-        self.__context:C = None
 
     @abc.abstractmethod
     def runGame(self):
@@ -23,3 +22,6 @@ class DirectorGame(abc.ABC, Generic[T]):
 
     def get_scene(self)-> T:
         return self.__scene
+
+    def exit(self):
+        pass

@@ -1,28 +1,20 @@
-
-
-
-from client.basicEventUI import Draw, ElementUI
+from client.basicEventUI import ElementUI, Draw
 from client.scene import SceneAppendListeiner
-from client.utilsElemets.basicBackGround import BasicBackGround
 from client.uiElements.uiPunterConst import UIPUNTER_OFFSET_MIND
-from client.utilsElemets.timeElement import TimeElement
 
 
-class InitScene(SceneAppendListeiner):
-    
+class PlayGameScene(SceneAppendListeiner):
+
     def __init__(self):
         super().__init__()
-        self.Background = self.addObjectsEvents(BasicBackGround()
-                                                .setImage('client/assets/space.png'))
-        self.Etime = self.addObjectsEvents(TimeElement())
         from client.globalContext import GlobalContext
         self.__context = GlobalContext()
-        
+        self.__players = [{'player': None, 'sprite': None}]
+        self.__mapa = None
     def start(self):
-        self.Etime.setTimeActive(5000)
-        self.Etime.startTime()
-        self.__context.getUiMause().setImage('client/assets/pointb.png').setOffset(UIPUNTER_OFFSET_MIND).setVisibleMouse(False)
-    
+        self.__context.getUiMause().setImage('client/assets/pointb.png').setOffset \
+            (UIPUNTER_OFFSET_MIND).setVisibleMouse(False)
+
     def event(self, event):
         for elemts in self.getObjectsEvents():
             if (isinstance(elemts, ElementUI)):
