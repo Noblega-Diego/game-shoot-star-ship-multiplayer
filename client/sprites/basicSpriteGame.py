@@ -19,8 +19,8 @@ class BasicSpriteGame(pygame.sprite.Sprite):
 
     def draw(self, surface:Surface):
         if(not self.__imagedraw is None):
-            self.rect = self.__imagedraw.get_rect()
-            self.rect.center = self.__pos
+            self.__rect = self.__imagedraw.get_rect()
+            self.__rect.center = self.__pos
             surface.blit(self.__imagedraw, self.__rect)
 
     def changeImageDraw(self, src):

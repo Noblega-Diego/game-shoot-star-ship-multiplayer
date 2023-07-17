@@ -30,8 +30,9 @@ class Game(DirectorGame[Scene]):
             clock.tick(30)  #se setea a 30fps
             if self.get_scene():
                 self.get_scene().activeEventStart()
+                self.__context.getInputHandler().handleInputKey().ejecute()
                 for event in pygame.event.get():
-                    self.__context.getInputHandler().handleInput(event).ejecute()
+                    self.__context.getInputHandler().handleInputEvent(event).ejecute()
                     self.get_scene().event(event)
                 self.__context.getUiMause().update()
                 self.get_scene().update()

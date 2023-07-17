@@ -16,7 +16,7 @@ class MenuController(ListeinerEventUI):
 
     def handlee_event(self, event: EventUI):
         if(event.equalsTo(self.__scene.EButtonToLoby, "click")):
-            self.__context.getSceneManager().changeTo('inicio')
+            self.__context.getSceneManager().changeTo('playgame')
 
     def getScene(self)->Scene:
         return self.__scene

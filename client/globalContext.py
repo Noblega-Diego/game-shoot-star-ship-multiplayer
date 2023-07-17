@@ -4,6 +4,7 @@ from client.manejadorScenas.uiManager import UiManager
 from client.uiElements.uiPunter import UiPunter
 
 class GlobalContext(object):
+
     def initialize(self, game):
         self.__game = game
         self.__uiPunter = UiPunter().setImage('client/assets/sprite_nave.png')
