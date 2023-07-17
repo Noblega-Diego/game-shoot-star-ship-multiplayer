@@ -6,6 +6,7 @@ class MShip():
         self.__position = (0, 0)
         self.__id = None
         self.__velocity = 1
+        self.__grados = 0
 
     def set_id(self, id:str):
         self.__id = id
@@ -27,3 +28,10 @@ class MShip():
 
     def get_velocity(self):
         return self.__velocity
+
+    def set_gr(self, grados):
+        self.__grados = grados
+        return self
+
+    def get_gr(self):
+        return self.__grados

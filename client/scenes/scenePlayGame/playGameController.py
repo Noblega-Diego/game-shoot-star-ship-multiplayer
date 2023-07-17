@@ -1,9 +1,10 @@
-from typing import List, Tuple
+import math
+from typing import Tuple, List
 
 from client.basicEventUI import ListeinerEventUI, EventUI
 from client.models import MShip
 from client.scenes.scenePlayGame.playGameScene import PlayGameScene
-from client.sprites import Ship, BasicSpriteGame
+from client.sprites import Ship
 
 
 # template v1.0
@@ -20,7 +21,7 @@ class Player:
     def getmShip(self) ->MShip:
         return self.__mship
 
-    def getSprite(self) -> BasicSpriteGame:
+    def getSprite(self) -> Ship:
         return self.__sprite
 
     def change_direccion(self, direccion):
@@ -37,6 +38,11 @@ class Player:
             traslate = (velocity, 0)
         self.getmShip().set_position((x + traslate[0], y + traslate[1]))
 
+    def rotate(self, mousePos:Tuple[int,int]):
+        posPlayer = self.getmShip().get_pos()
+        gr = math.degrees(math.atan2(-mousePos[1] + posPlayer[1], mousePos[0] - posPlayer[0])) - 90
+        self.getmShip().set_gr(int(gr))
+
 
 class PlayGameController(ListeinerEventUI):
 
@@ -44,7 +50,7 @@ class PlayGameController(ListeinerEventUI):
         from client.globalContext import GlobalContext
         self.__context = GlobalContext()
         self.__scene = scene
-        self.__players = []
+        self.__players:List[Player] = []
         self.addParticipantes([MShip().set_id("123").set_position((12,12)).set_velocity(10), MShip().set_id("333").set_position((40,100)).set_velocity(2)])
         self.__scene.setUpdate(self.update)
         self.__scene.setStart(self.start)
@@ -65,6 +71,7 @@ class PlayGameController(ListeinerEventUI):
     def update(self):
         for player in self.__players:
             player.getSprite().setPos(player.getmShip().get_pos())
+            player.getSprite().setGr(player.getmShip().get_gr())
 
     def start(self):
         from .partidaInputMap import UiMainInputMap

@@ -1,4 +1,6 @@
 # template v1.0
+import pygame
+
 from client.inputController.command import Command
 
 
@@ -15,4 +17,16 @@ class moveCommand(Command):
         self.__direction = direction
 
     def ejecute(self):
-            self.__player.change_direccion(self.__direction)
+        self.__player.change_direccion(self.__direction)
+
+
+class rotate(Command):
+    def __init__(self, player):
+        from client.scenes.scenePlayGame.playGameController import Player
+        from client.globalContext import GlobalContext
+        self.__context = GlobalContext
+        self.__player:Player = player
+
+    def ejecute(self):
+        print("is rotate")
+        self.__player.rotate(pygame.mouse.get_pos())

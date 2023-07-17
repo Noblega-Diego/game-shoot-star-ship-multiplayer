@@ -31,6 +31,9 @@ class BasicSpriteGame(pygame.sprite.Sprite):
         self.__imagedraw = image
         return self
 
+    def getImageDraw(self):
+        return self.__imagedraw
+
     def setPos(self, pos: Tuple[int, int]):
         self.__pos = pos
         return self

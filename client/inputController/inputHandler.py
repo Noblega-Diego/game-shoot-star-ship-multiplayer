@@ -2,7 +2,7 @@ import pygame
 
 from . import command
 from .command import Command, CommandExtend
-
+from . import PYGAME_MOUSE_POS
 
 class KeyInput:
     def __init__(self, type_input:str, num):
@@ -40,7 +40,8 @@ class InputHandle:
         if (not map is None):
             for k in map.getMapInputs().keys():
                 if ((k.type == 'key' and keys[k.num])):
-                    print(k.num)
+                    com.addComand(map.getMapInputs().setdefault(k, None))
+                elif ((k.type == 'mouse' and k.num == PYGAME_MOUSE_POS)):
                     com.addComand(map.getMapInputs().setdefault(k, None))
 
     def handleEvent(self,com, map, event):

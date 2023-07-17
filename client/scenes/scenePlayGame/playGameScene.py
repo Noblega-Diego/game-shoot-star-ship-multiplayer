@@ -22,8 +22,8 @@ class PlayGameScene(SceneAppendListeiner):
     def start(self):
         if (not self.__start is None):
             self.__start()
-        self.__context.getUiMause().setImage('client/assets/pointb.png').setOffset \
-            (UIPUNTER_OFFSET_MIND).setVisibleMouse(False)
+        self.__context.getUiMause().setImage('client/assets/pointb.png')\
+            .setOffset(UIPUNTER_OFFSET_MIND).setVisibleMouse(False)
 
     def event(self, event):
         for elemts in self.__ships + self.getObjectsEvents():
