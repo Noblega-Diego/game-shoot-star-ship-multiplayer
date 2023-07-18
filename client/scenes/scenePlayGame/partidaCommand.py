@@ -28,5 +28,4 @@ class rotate(Command):
         self.__player:Player = player
 
     def ejecute(self):
-        print("is rotate")
         self.__player.rotate(pygame.mouse.get_pos())
