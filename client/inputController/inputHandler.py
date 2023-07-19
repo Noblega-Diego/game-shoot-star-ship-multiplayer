@@ -5,9 +5,11 @@ from .command import Command, CommandExtend
 from . import PYGAME_MOUSE_POS
 
 class KeyInput:
-    def __init__(self, type_input:str, num):
+    def __init__(self, type_input:str, cod, typeEventPygame = -1):
         self.type = type_input
-        self.num = num
+        if(typeEventPygame > -1):
+            self.type +="_"+ str(typeEventPygame)
+        self.cod = cod
 
 class InputMap:
     def getMapInputs(self) -> dict[KeyInput, Command]:
@@ -39,19 +41,28 @@ class InputHandle:
     def handleKey(self,com, map, keys):
         if (not map is None):
             for k in map.getMapInputs().keys():
-                if ((k.type == 'key' and keys[k.num])):
+                if ((k.type == 'key' and keys[k.cod])):
                     com.addComand(map.getMapInputs().setdefault(k, None))
-                elif ((k.type == 'mouse' and k.num == PYGAME_MOUSE_POS)):
+                elif ((k.type == 'mouse' and k.cod == PYGAME_MOUSE_POS)):
                     com.addComand(map.getMapInputs().setdefault(k, None))
 
     def handleEvent(self,com, map, event):
         if (not map is None):
             for k in map.getMapInputs().keys():
-                if (k.type == 'event' and k.num == event.type):
-                    c = map.getMapInputs().setdefault(k, None)
-                    if (isinstance(c, CommandExtend)):
-                        com.addComand(c.addEvent(event))
-                    else:
+                if (k.type == 'event_' + str(event.type)):
+                    print("se imprime evento:" + str(event.type))
+                    c = None
+                    if(event.type == pygame.KEYDOWN and k.cod == event.key):
+                        c = map.getMapInputs().setdefault(k, None)
+                    elif(event.type == pygame.KEYUP and k.cod == event.key):
+                        c = map.getMapInputs().setdefault(k, None)
+                    elif(event.type == pygame.JOYBUTTONDOWN and k.cod == event.button):
+                        c = map.getMapInputs().setdefault(k, None)
+                    elif(event.type == pygame.JOYBUTTONUP and k.cod == event.button):
+                        c = map.getMapInputs().setdefault(k, None)
+                    elif(event.type == pygame.MOUSEBUTTONDOWN and k.cod == event.button):
+                        c = map.getMapInputs().setdefault(k, None)
+                    if(not c is None):
                         com.addComand(c)
 
     def changeInputMap(self, inputMap: InputMap):

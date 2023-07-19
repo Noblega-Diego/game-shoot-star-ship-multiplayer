@@ -14,6 +14,7 @@ class PlayGameScene(SceneAppendListeiner):
         from client.globalContext import GlobalContext
         self.__context = GlobalContext()
         self.__ships: list[BasicSpriteGame] = []
+        self.__shots: list[BasicSpriteGame] = []
         self.__mapa = None
         self.Background = self.addObjectsEvents(BasicBackGround()
                                                 .setDimencion((1200, 800))
@@ -35,14 +36,14 @@ class PlayGameScene(SceneAppendListeiner):
     def update(self):
         if(not self.__update is None):
             self.__update()
-        for elemts in self.__ships + self.getObjectsEvents():
+        for elemts in self.__ships + self.getObjectsEvents() + self.__ships + self.__shots:
             if (isinstance(elemts, Update)):
                 elemts.update()
             elif (isinstance(elemts, BasicSpriteGame)):
                 elemts.update()
 
     def draw(self, surface):
-        for elemts in self.getObjectsEvents() + self.__ships:
+        for elemts in self.getObjectsEvents() + self.__ships + self.__shots:
             if (isinstance(elemts, Draw)):
                 elemts.draw(surface)
             elif (isinstance(elemts, BasicSpriteGame)):
@@ -59,3 +60,6 @@ class PlayGameScene(SceneAppendListeiner):
 
     def setStart(self, callback):
         self.__start = callback
+
+    def setShots(self, listShots):
+        self.__shots = listShots

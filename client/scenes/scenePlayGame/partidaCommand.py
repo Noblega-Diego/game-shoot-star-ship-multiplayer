@@ -29,3 +29,15 @@ class rotate(Command):
 
     def ejecute(self):
         self.__player.rotate(pygame.mouse.get_pos())
+
+class shoot(Command):
+    def __init__(self, player):
+        from client.scenes.scenePlayGame.playGameController import Player
+        from client.globalContext import GlobalContext
+        self.__context = GlobalContext
+        self.__player:Player = player
+
+    def ejecute(self):
+        print("ejecute")
+        self.__player.shoot()
+
