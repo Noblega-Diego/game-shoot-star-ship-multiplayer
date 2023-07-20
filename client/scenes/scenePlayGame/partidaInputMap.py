@@ -14,7 +14,8 @@ class UiMainInputMap(InputMap):
             KeyInput("key", pygame.K_a): commandPartida.moveCommand(commandPartida.moveCommand.MOVE_LEFT,player),
             KeyInput("key", pygame.K_s): commandPartida.moveCommand(commandPartida.moveCommand.MOVE_DOWN,player),
             KeyInput("key", pygame.K_d): commandPartida.moveCommand(commandPartida.moveCommand.MOVE_RIGHT,player),
-            KeyInput("event", 1,pygame.MOUSEBUTTONDOWN): commandPartida.shoot(player),
+            KeyInput("event", 1, pygame.MOUSEBUTTONDOWN): commandPartida.shoot(player),
+            KeyInput("event", pygame.K_SPACE, pygame.KEYDOWN): commandPartida.shoot(player),
             KeyInput("mouse", PYGAME_MOUSE_POS): commandPartida.rotate(player)
         }
 

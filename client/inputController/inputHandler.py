@@ -50,7 +50,6 @@ class InputHandle:
         if (not map is None):
             for k in map.getMapInputs().keys():
                 if (k.type == 'event_' + str(event.type)):
-                    print("se imprime evento:" + str(event.type))
                     c = None
                     if(event.type == pygame.KEYDOWN and k.cod == event.key):
                         c = map.getMapInputs().setdefault(k, None)

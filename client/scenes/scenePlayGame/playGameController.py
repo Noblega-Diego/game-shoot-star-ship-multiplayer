@@ -5,6 +5,7 @@ from client.basicEventUI import ListeinerEventUI, EventUI
 from client.models import MShip
 from client.scenes.scenePlayGame.playGameScene import PlayGameScene
 from client.sprites import Ship
+from client.sprites.Pared import Pared
 from client.sprites.Shoot import Shoot
 
 
@@ -56,12 +57,21 @@ class Player:
 
 
 class Disparo:
+
     def __init__(self, player):
         self.__player:Player = player
         self.__sprite = Shoot(self.__player.getmShip().get_pos(),self.__player.getmShip().get_gr())
+        self.__duracion = 40
 
     def getSprite(self) -> Shoot:
         return self.__sprite
+
+    def disminuirDuracion(self):
+        self.__duracion -=1
+
+    def getDuracion(self):
+        return self.__duracion
+
 
 class PlayGameController(ListeinerEventUI):
 
@@ -74,6 +84,25 @@ class PlayGameController(ListeinerEventUI):
         self.addParticipantes([MShip().set_id("123").set_position((12,12)).set_velocity(10), MShip().set_id("333").set_position((40,100)).set_velocity(2)])
         self.__scene.setUpdate(self.update)
         self.__scene.setStart(self.start)
+        file1 = open('mapa/mapa.txt', 'r')
+        count = 0
+        listParedes = []
+        posInitx = 12
+        posInity = 12
+        posY = posInity
+        while True:
+            count += 1
+            line = file1.readline()
+            if not line:
+                break
+            posX = posInitx
+            for x in line:
+                if(x == "x"):
+                    listParedes.append(Pared().setPos((posX,posY)))
+                posX += 24
+            #print("Line{}: {}".format(count, line.strip()))
+            posY += 24
+        self.__scene.setParedes(listParedes)
 
     def handlee_event(self, event: EventUI):
         pass
@@ -89,12 +118,17 @@ class PlayGameController(ListeinerEventUI):
         pass
 
     def update(self):
-        print("ss"+ str(len(self.__shoots)))
         for player in self.__players:
             player.getSprite().setPos(player.getmShip().get_pos())
             player.getSprite().setGr(player.getmShip().get_gr())
             for sh in player.getDisparos():
                 self.__shoots.append(sh)
+        newShoots = []
+        for sh in self.__shoots:
+            if(sh.getDuracion() >0):
+                newShoots.append(sh)
+            sh.disminuirDuracion()
+        self.__shoots = newShoots
         self.__scene.setShots([sh.getSprite() for sh in self.__shoots])
 
 

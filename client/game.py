@@ -11,8 +11,8 @@ class Game(DirectorGame[Scene]):
         super().__init__()
         pygame.init()
         self.__context = GlobalContext().initialize(self)
-        self.__size = (1200, 800)
-        self.__surface = pygame.display.set_mode(self.__size, vsync=0)
+        self.__size = (1200, 840)
+        self.__surface = pygame.display.set_mode(self.__size, vsync=1)
         pygame.display.set_caption('nave war')
 
     def start(self):

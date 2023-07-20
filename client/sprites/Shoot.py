@@ -32,5 +32,4 @@ class Shoot(BasicSpriteGame):
             self.setPos((self.getPos()[0] + x, self.getPos()[1] - y))
 
     def draw(self, surface: Surface):
-        print("disparo dibujado")
         super().draw(surface)

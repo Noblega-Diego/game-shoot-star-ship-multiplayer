@@ -15,10 +15,11 @@ class PlayGameScene(SceneAppendListeiner):
         self.__context = GlobalContext()
         self.__ships: list[BasicSpriteGame] = []
         self.__shots: list[BasicSpriteGame] = []
+        self.__paredes: list[BasicSpriteGame] = []
         self.__mapa = None
         self.Background = self.addObjectsEvents(BasicBackGround()
-                                                .setDimencion((1200, 800))
-                                                .setImage('client/assets/imageMenu.jpg'))
+                                                .setDimencion((1200, 840))
+                                                .setImage('client/assets/fondopartida.png'))
 
     def start(self):
         if (not self.__start is None):
@@ -36,14 +37,14 @@ class PlayGameScene(SceneAppendListeiner):
     def update(self):
         if(not self.__update is None):
             self.__update()
-        for elemts in self.__ships + self.getObjectsEvents() + self.__ships + self.__shots:
+        for elemts in self.__ships + self.getObjectsEvents() + self.__ships + self.__shots + self.__paredes:
             if (isinstance(elemts, Update)):
                 elemts.update()
             elif (isinstance(elemts, BasicSpriteGame)):
                 elemts.update()
 
     def draw(self, surface):
-        for elemts in self.getObjectsEvents() + self.__ships + self.__shots:
+        for elemts in self.getObjectsEvents() + self.__shots + self.__ships + self.__paredes:
             if (isinstance(elemts, Draw)):
                 elemts.draw(surface)
             elif (isinstance(elemts, BasicSpriteGame)):
@@ -63,3 +64,6 @@ class PlayGameScene(SceneAppendListeiner):
 
     def setShots(self, listShots):
         self.__shots = listShots
+
+    def setParedes(self, paredes: list[BasicSpriteGame]):
+        self.__paredes = paredes
