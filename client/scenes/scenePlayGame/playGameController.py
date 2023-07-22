@@ -81,12 +81,12 @@ class PlayGameController(ListeinerEventUI):
         self.__scene = scene
         self.__players:List[Player] = []
         self.__shoots:List[Disparo] = []
-        self.addParticipantes([MShip().set_id("123").set_position((12,12)).set_velocity(10), MShip().set_id("333").set_position((40,100)).set_velocity(2)])
+        self.addParticipantes([MShip().set_id("123").set_position((100,100)).set_velocity(10), MShip().set_id("333").set_position((40,100)).set_velocity(2)])
         self.__scene.setUpdate(self.update)
         self.__scene.setStart(self.start)
         file1 = open('mapa/mapa.txt', 'r')
         count = 0
-        listParedes = []
+        self.__listParedes = []
         posInitx = 12
         posInity = 12
         posY = posInity
@@ -98,11 +98,11 @@ class PlayGameController(ListeinerEventUI):
             posX = posInitx
             for x in line:
                 if(x == "x"):
-                    listParedes.append(Pared().setPos((posX,posY)))
+                    self.__listParedes.append(Pared().setPos((posX,posY)))
                 posX += 24
             #print("Line{}: {}".format(count, line.strip()))
             posY += 24
-        self.__scene.setParedes(listParedes)
+        self.__scene.setParedes(self.__listParedes)
 
     def handlee_event(self, event: EventUI):
         pass
@@ -119,15 +119,39 @@ class PlayGameController(ListeinerEventUI):
 
     def update(self):
         for player in self.__players:
+            antpos = player.getSprite().getPos()
+            antgrados = player.getmShip().get_gr()
+            if(player.getmShip().get_pos()[0] < 0):
+                player.getmShip().set_position((player.getmShip().get_pos()[0]+ 1200,player.getmShip().get_pos()[1]))
+            elif(player.getmShip().get_pos()[0] > 1200):
+                player.getmShip().set_position((player.getmShip().get_pos()[0]- 1200,player.getmShip().get_pos()[1]))
+            if (player.getmShip().get_pos()[1] < 0):
+                player.getmShip().set_position((player.getmShip().get_pos()[0], player.getmShip().get_pos()[1] +840))
+            elif (player.getmShip().get_pos()[1] > 840):
+                player.getmShip().set_position((player.getmShip().get_pos()[0], player.getmShip().get_pos()[1] -840))
             player.getSprite().setPos(player.getmShip().get_pos())
             player.getSprite().setGr(player.getmShip().get_gr())
             for sh in player.getDisparos():
                 self.__shoots.append(sh)
+            for p in self.__listParedes:
+                if(player.getSprite().detectCollider(p)):
+                    player.getSprite().setPos(antpos)
+                    player.getmShip().set_position(antpos)
+                    player.getSprite().setGr(antgrados)
+                    player.getmShip().set_gr(antgrados)
+
         newShoots = []
         for sh in self.__shoots:
             if(sh.getDuracion() >0):
-                newShoots.append(sh)
-            sh.disminuirDuracion()
+                sh.disminuirDuracion()
+                iscoll = False
+                for p in self.__listParedes + [pla.getSprite() for pla in self.__players]:
+                    m = sh.getSprite().getMask()
+                    sh.getSprite().setTestColor((0, 0, 155))
+                    if((not m is None) and p != self.__players[0].getSprite()  and sh.getSprite().detectCollider(p)):
+                        iscoll = True
+                if(not iscoll):
+                    newShoots.append(sh)
         self.__shoots = newShoots
         self.__scene.setShots([sh.getSprite() for sh in self.__shoots])
 

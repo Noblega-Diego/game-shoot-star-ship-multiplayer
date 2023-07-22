@@ -18,9 +18,8 @@ class BasicSpriteGame(pygame.sprite.Sprite):
         pass
 
     def draw(self, surface:Surface):
+        self.refresh()
         if(not self.__imagedraw is None):
-            self.__rect = self.__imagedraw.get_rect()
-            self.__rect.center = self.__pos
             surface.blit(self.__imagedraw, self.__rect)
 
     def changeImageDraw(self, src):
@@ -31,7 +30,7 @@ class BasicSpriteGame(pygame.sprite.Sprite):
         self.__imagedraw = image
         return self
 
-    def getImageDraw(self):
+    def getImageDraw(self) -> Surface:
         return self.__imagedraw
 
     def setPos(self, pos: Tuple[int, int]):
@@ -43,3 +42,26 @@ class BasicSpriteGame(pygame.sprite.Sprite):
 
     def getRect(self):
         return self.__rect
+
+    def getMask(self):
+        if(not self.__imagedraw is None):
+            return pygame.mask.from_surface(self.getImageDraw())
+        return None
+
+    def detectCollider(self, sprite):
+        mask = self.getMask()
+        maskOther = sprite.getMask()
+        vrect = sprite.getRect()
+        if((not self.getRect() is None) and (not vrect is None)):
+            oX = vrect.x - self.getRect().x
+            oY = vrect.y - self.getRect().y
+            if mask.overlap(maskOther, (oX, oY)):
+                return True
+            return False
+        else:
+            return False
+
+    def refresh(self):
+        if (not self.__imagedraw is None):
+            self.__rect = self.__imagedraw.get_rect()
+            self.__rect.center = self.__pos

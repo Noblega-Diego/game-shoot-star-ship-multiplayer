@@ -7,13 +7,14 @@ from .basicSpriteGame import BasicSpriteGame
 
 class Shoot(BasicSpriteGame):
     image = pygame.image.load('client/assets/vala.png')
-    __velocidad = 8
+    __velocidad = 12
     def __init__(self, initPos, grados):
         super().__init__()
         self.__grados = grados
         self.__rotate = True
         self.__duracion = 100
         self.setPos(initPos)
+        self.__testColor = (255,255,255)
 
     def event(self, event):
         pass
@@ -33,3 +34,9 @@ class Shoot(BasicSpriteGame):
 
     def draw(self, surface: Surface):
         super().draw(surface)
+       # kk = self.getMask().to_surface()
+       # kk.fill(self.__testColor)
+       # surface.blit(kk, (self.getRect().x, self.getRect().y))
+
+    def setTestColor(self, param):
+        self.__testColor = param

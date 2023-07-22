@@ -44,7 +44,7 @@ class PlayGameScene(SceneAppendListeiner):
                 elemts.update()
 
     def draw(self, surface):
-        for elemts in self.getObjectsEvents() + self.__shots + self.__ships + self.__paredes:
+        for elemts in self.getObjectsEvents() + self.__paredes + self.__shots + self.__ships:
             if (isinstance(elemts, Draw)):
                 elemts.draw(surface)
             elif (isinstance(elemts, BasicSpriteGame)):

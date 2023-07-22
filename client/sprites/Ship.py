@@ -20,7 +20,11 @@ class Ship(BasicSpriteGame):
 
     def draw(self, surface: Surface):
         super().draw(surface)
+    #    mask = pygame.mask.from_surface(self.getImageDraw())
+    #    surface.blit(mask.to_surface(),(self.getRect().x,self.getRect().y))
+        pygame.draw.rect(surface,(255,255,255),self.getRect(),2)
 
     def setGr(self, grados):
         self.__grados = grados
+        self.refresh()
         return self

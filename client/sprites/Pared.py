@@ -17,3 +17,5 @@ class Pared(BasicSpriteGame):
 
     def draw(self, surface: Surface):
         super().draw(surface)
+    #    mask = pygame.mask.from_surface(self.getImageDraw())
+    #    surface.blit(mask.to_surface(), (self.getRect().x, self.getRect().y))
