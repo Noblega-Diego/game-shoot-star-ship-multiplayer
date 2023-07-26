@@ -12,11 +12,12 @@ class InitScene(SceneAppendListeiner):
     
     def __init__(self):
         super().__init__()
-        self.Background = self.addObjectsEvents(BasicBackGround()
-                                                .setImage('client/assets/space.png'))
-        self.Etime = self.addObjectsEvents(TimeElement())
         from client.globalContext import GlobalContext
         self.__context = GlobalContext()
+        self.Background = self.addObjectsEvents(BasicBackGround()
+                                                .setDimencion(self.__context.getSize())
+                                                .setImage('client/assets/space.png'))
+        self.Etime = self.addObjectsEvents(TimeElement())
         
     def start(self):
         self.Etime.setTimeActive(5000)

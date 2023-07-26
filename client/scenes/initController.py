@@ -7,10 +7,10 @@ from client.scenes.initScene import InitScene
 
 class InitController(ListeinerEventUI):
 
-    def __init__(self, scene:InitScene) -> None:
+    def __init__(self) -> None:
         super().__init__()
-        scene.set_listeinerEvent(self)
-        self.__scene = scene
+        self.__scene = InitScene()
+        self.__scene.set_listeinerEvent(self)
         from client.globalContext import GlobalContext
         self.__context = GlobalContext()
 

@@ -13,11 +13,13 @@ class Player():
         self.__gr = None
         self.__vida = 100
 
-    def changePos(self, pos:Tuple[int,int]):
+    def set_Pos(self, pos:Tuple[int,int]):
         self.__pos = pos
+        return self
 
     def set_Id(self, id:str):
         self.__id = id
+        return self
 
     def get_pos(self):
         return self.__pos
@@ -27,12 +29,14 @@ class Player():
 
     def set_gr(self, gr):
         self.__gr = gr
+        return  self
 
     def get_gr(self):
         return self.__gr
 
     def set_vida(self, vida):
         self.__vida = vida
+        return self
 
     def get_vida(self):
         return self.__vida
@@ -78,7 +82,7 @@ def recv(userConnection:UserType) -> str:
 
     if (res.endswith("/end")):
         finalres = userConnection['middlemessages'] + res
-        res.out_res = ''
+        userConnection['middlemessages'] = ''
         return finalres
     else:
         total = (userConnection['middlemessages'] + res).split("/end")
@@ -86,15 +90,22 @@ def recv(userConnection:UserType) -> str:
         return ('/end'.join(total))
 def readData(userConnection:UserType):
     data: str = recv(userConnection)
+    #data = data.replace("'","\"")
+    print("request:" +data)
     json_data:list[Data] = []
     if data.find('/end') >= 1:
         dall = data.split('/end')
         for j in dall:
+            print('indall[j]'+ j)
             if j != '':
                 # print('{}>{}'.format(id,j))
                 l = json.loads(j)
-                for g in l:
-                    json_data.append(g)
+                if(isinstance(l, list)):
+                    for g in l:
+                        json_data.append(g)
+                else:
+                    json_data.append(l)
+    print("json_data:" + str(json_data))
     return json_data
 
 class Command(abc.ABC):
@@ -109,23 +120,38 @@ class CommandLogin(Command):
         self.__message = message
 
     def ejecute(self):
-        listusuariosEnPartida:list[Data] = []
+        print("ejecute:"+str(self.__class__))
+        conexion = self.__user['conexion']
+        messages:list[Data] = []
+        self.__user['player'] = Player().set_Id(str(self.__user["id"])).set_vida(100).set_gr(0).set_Pos((0,0))
+        op_accept: Data = \
+            {
+                'OP': {
+                    'type': OP_SEND_ACCEPT
+                },
+                'data': {
+                    'id': id,
+                    'vida': list_users[id]['player'].get_vida(),
+                    'pos': list_users[id]["player"].get_pos(),
+                    'gr': list_users[id]["player"].get_gr()
+                }
+            }
+        messages.append(op_accept)
+        op_sendUser: Data = \
+            {
+                'OP': {
+                    'type': OP_SEND_ADDUSER
+                },
+                'data': {
+                    'id': id,
+                    'vida': list_users[id]['player'].get_vida(),
+                    'pos': list_users[id]["player"].get_pos(),
+                    'gr': list_users[id]["player"].get_gr()
+                }
+            }
         for id_user, user in self.__listAllUsers[0].items():
             if (id_user != id):
-                op_sendUser:Data = \
-                    {
-                        'OP': {
-                            'type': OP_SEND_ADDUSER
-                        },
-                        'data': {
-                            'id': id,
-                            'color': list_users[id]['player'].get_color(),
-                            'vida': list_users[id]['player'].get_vida(),
-                            'pos': list_users[id]["player"].get_pos(),
-                            'gr': list_users[id]["player"].get_gr()
-                        }
-                    }
-                user[0].sendall(createSendData([op_sendUser]))  # enviamos el nuevo jugador a los demas usuarios
+                user['conexion'].sendall(createSendData([op_sendUser]))  # enviamos el nuevo jugador a los demas usuarios
                 op_newUser:Data = \
                     {
                         'OP': {
@@ -133,14 +159,13 @@ class CommandLogin(Command):
                         },
                         'data': {
                             'id': id_user,
-                            'color': user["player"].get_color(),
                             'vida': user["player"].get_vida(),
                             'pos': user["player"].get_pos(),
                             'gr': user["player"].get_gr()
                         }
                     }
-                listusuariosEnPartida.append(op_newUser)
-        conexion.sendall(createSendData(listusuariosEnPartida))
+                messages.append(op_newUser)
+        conexion.sendall(createSendData(messages))
 
 class CommandConfirm(Command):
     def __init__(self, message: Data, user:UserType, listAllUsers:list[Dict[int,UserType]]):
@@ -150,10 +175,23 @@ class CommandConfirm(Command):
 
     def ejecute(self):
         self.__user['confirm'] = True
+        allConfirm = True
         for id_user, user in self.__listAllUsers.items():
-            sendData: Data = {"OP": {'type':OP_SEND_ACCEPT},
+            if(user["confirm"] == False):
+                allConfirm = False
+                break
+        for id_user, user in self.__listAllUsers.items():
+            messages: list[Data] = []
+            accept: Data = {"OP": {'type':OP_SEND_ACCEPT},
                               "data": {"id":user["id"]}}
-            user["conexion"].sendall(createSendData([sendData]))
+            messages.append(accept)
+            if(allConfirm):
+                init: Data = {"OP": {'type': OP_SEND_START},
+                                  "data": {}}
+                messages.append(init)
+            user["conexion"].sendall(createSendData(messages))
+
+
 
 
 
@@ -163,10 +201,10 @@ class MapEvent(object):
         self.__user = user
         self.__listAllUsers = listAllUsers
         self.list:dict[str, Command.__class__] = {
-            OP_ACTIONS_LOGIN: CommandLogin.__class__,
-            OP_ACTIONS_CONFIRMPLAYERSTART: CommandConfirm.__class__,
-            OP_ACTIONS_MOVEPLAYER: CommandConfirm.__class__,
-            OP_ACTIONS_KILLPLAYER: CommandConfirm.__class__
+            OP_ACTIONS_LOGIN: CommandLogin,
+            OP_ACTIONS_CONFIRMPLAYERSTART: CommandConfirm,
+            OP_ACTIONS_MOVEPLAYER: CommandConfirm,
+            OP_ACTIONS_KILLPLAYER: CommandConfirm
         }
 
     def getCommand(self, acction:str, message:Data) -> Command:
@@ -192,15 +230,16 @@ def atenderPlayer(conexion, id):
     if(partida['status'] != PARTIDA_STATUS_ROOM):
         exitPlayer(conexion,id)
         return
-    login(conexion, id)
     eventHandle = MapEvent(getUser(id), [list_users])
     try:
         while True:
+            print("ss")
             allMessages = readData(getUser(id))
+            print(allMessages)
             for message in allMessages:
                 eventHandle.getCommand(message["OP"]["type"],message).ejecute()
-            pass
-    except:
+    except (RuntimeError, TypeError, NameError) as e:
+        print(e)
         print('mensaje no enviado')
     finally:
         print('conexion finalizada: {}'.format(id))

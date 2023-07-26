@@ -3,6 +3,8 @@ from typing import TypeVar, Generic
 
 from pygame.event import Event
 
+from client.network.network import Data
+
 
 class Command(abc.ABC):
     @abc.abstractmethod
@@ -42,6 +44,22 @@ class CommandCombined(Command):
     def ejecute(self):
         for command in self.__listCommand:
             command.ejecute()
+
+class CommandNetwork(Command):
+
+    def __init__(self):
+        self.__data: Data = None
+
+    def getNew(self):
+        return self.__class__()
+
+    def setData(self, data:Data) -> Command:
+        d = self.getNew()
+        d.__data = data
+        return d
+
+    def getData(self):
+        return self.__data
 
 
 class CommandExit(Command):

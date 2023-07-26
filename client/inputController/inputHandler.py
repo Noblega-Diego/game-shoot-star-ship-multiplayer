@@ -1,10 +1,13 @@
 import pygame
 
 from . import command
-from .command import Command, CommandExtend
+from .command import Command
 from . import PYGAME_MOUSE_POS
+from ..network.PublicEventPygame import NetworkEvents
 
-class KeyInput:
+
+
+class EventInput:
     def __init__(self, type_input:str, cod, typeEventPygame = -1):
         self.type = type_input
         if(typeEventPygame > -1):
@@ -12,14 +15,15 @@ class KeyInput:
         self.cod = cod
 
 class InputMap:
-    def getMapInputs(self) -> dict[KeyInput, Command]:
+    def getMapInputs(self) -> dict[EventInput, Command]:
         pass
 
 class InputHandle:
 
-
     def __init__(self, context):
+        from client.network.partidaNetworkMap import NetworkMap
         self.__inputMap = None
+        self.__networworkMap = NetworkMap()
         from .uiMainInputMap import UiMainInputMap
         self.__masterInputMap = UiMainInputMap()
         self.__context = context
@@ -27,6 +31,7 @@ class InputHandle:
     def handleInputEvent(self, event) -> Command:
         keys = pygame.key.get_pressed()
         com = command.CommandCombined()
+        self.handleEvent(com,self.__networworkMap, event)
         self.handleEvent(com,self.__masterInputMap,event)
         self.handleEvent(com,self.__inputMap,event)
         return com
@@ -50,6 +55,7 @@ class InputHandle:
         if (not map is None):
             for k in map.getMapInputs().keys():
                 if (k.type == 'event_' + str(event.type)):
+                    print('evnt:'+str(event.type))
                     c = None
                     if(event.type == pygame.KEYDOWN and k.cod == event.key):
                         c = map.getMapInputs().setdefault(k, None)
@@ -61,6 +67,10 @@ class InputHandle:
                         c = map.getMapInputs().setdefault(k, None)
                     elif(event.type == pygame.MOUSEBUTTONDOWN and k.cod == event.button):
                         c = map.getMapInputs().setdefault(k, None)
+                    elif(event.type == NetworkEvents.EVENT_NETWORK and k.cod == event.OP["type"]):
+                        c = map.getMapInputs().setdefault(k, None)
+                        if(not c is None):
+                            c = c.setData(event.data)
                     if(not c is None):
                         com.addComand(c)
 

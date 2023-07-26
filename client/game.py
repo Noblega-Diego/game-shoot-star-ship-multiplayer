@@ -10,8 +10,8 @@ class Game(DirectorGame[Scene]):
     def __init__(self) -> None:
         super().__init__()
         pygame.init()
-        self.__context = GlobalContext().initialize(self)
         self.__size = (1200, 840)
+        self.__context = GlobalContext().initialize(self)
         self.__surface = pygame.display.set_mode(self.__size, vsync=1)
         pygame.display.set_caption('nave war')
 
@@ -41,3 +41,6 @@ class Game(DirectorGame[Scene]):
             pygame.display.update()
         pygame.quit()
         sys.exit()
+
+    def getSize(self):
+        return self.__size

@@ -75,13 +75,13 @@ class Disparo:
 
 class PlayGameController(ListeinerEventUI):
 
-    def __init__(self, scene:PlayGameScene):
+    def __init__(self):
         from client.globalContext import GlobalContext
         self.__context = GlobalContext()
-        self.__scene = scene
+        self.__scene = PlayGameScene()
         self.__players:List[Player] = []
         self.__shoots:List[Disparo] = []
-        self.addParticipantes([MShip().set_id("123").set_position((100,100)).set_velocity(10), MShip().set_id("333").set_position((40,100)).set_velocity(2)])
+        #self.addParticipantes([MShip().set_id("123").set_position((100,100)).set_velocity(10), MShip().set_id("333").set_position((40,100)).set_velocity(2)])
         self.__scene.setUpdate(self.update)
         self.__scene.setStart(self.start)
         file1 = open('mapa/mapa.txt', 'r')
@@ -103,6 +103,12 @@ class PlayGameController(ListeinerEventUI):
             #print("Line{}: {}".format(count, line.strip()))
             posY += 24
         self.__scene.setParedes(self.__listParedes)
+
+    def start(self):
+        from .partidaInputMap import UiMainInputMap
+        players: list[MShip] = self.__context.getPartidaContext().get("players")
+        self.addParticipantes(players)
+        self.__context.getInputHandler().changeInputMap(UiMainInputMap(self.__players[0]))
 
     def handlee_event(self, event: EventUI):
         pass
@@ -156,6 +162,4 @@ class PlayGameController(ListeinerEventUI):
         self.__scene.setShots([sh.getSprite() for sh in self.__shoots])
 
 
-    def start(self):
-        from .partidaInputMap import UiMainInputMap
-        self.__context.getInputHandler().changeInputMap(UiMainInputMap(self.__players[0]))
+

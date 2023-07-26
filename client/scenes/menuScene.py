@@ -10,19 +10,23 @@ class MenuScene(SceneAppendListeiner):
     
     def __init__(self):
         super().__init__()
+        from client.globalContext import GlobalContext
+        self.__context = GlobalContext()
         self.Background = self.addObjectsEvents(BasicBackGround()
-                                                .setDimencion((1200,800))
+                                                .setDimencion(self.__context.getSize())
                                                 .setImage('client/assets/imageMenu.jpg'))
         self.EButtonToLoby = self.addObjectsEvents(ButtonText()
                                                 .setSize(25)
                                                 .set_size([250.,40])
                                                 .setText("Play")
                                                 .set_pos([50,50]))
-        from client.globalContext import GlobalContext
-        self.__context = GlobalContext()
+
         
     def start(self):
         self.__context.getUiMause().setImage(None).setVisibleMouse(True)
+
+    def end(self):
+        self.resetInit()
 
     def event(self, event):
         for elemts in self.getObjectsEvents():
@@ -38,8 +42,5 @@ class MenuScene(SceneAppendListeiner):
         for elemts in self.getObjectsEvents():
             if (isinstance(elemts, ElementUI)):
                 elemts.draw(surface)
-
-    def end(self):
-        self.resetInit()
 
     
