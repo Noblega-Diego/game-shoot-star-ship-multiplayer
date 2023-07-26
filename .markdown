@@ -1,0 +1,15 @@
+
+
+instalacion
+ 1) clonar repositorio
+ 1) descargar python 3.10 desde 
+    * 32bits : https://www.python.org/ftp/python/3.10.3/python-3.10.3.exe
+    * 64bits : https://www.python.org/ftp/python/3.10.3/python-3.10.3-amd64.exe
+ 1) abrir el ejecutable y marcar casilla de add Python to path
+ 1) click en install now
+ 1) abrir terminal
+ 1) escribir python --version, para verificar la correcta instalacion
+ 1) escripir pip install pygame
+ 1) posicionarse en la ruta del madre del proyecto.
+ 1) correr comando python main.py
+ 1) correr comando python serverinit.py

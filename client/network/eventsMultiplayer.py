@@ -13,3 +13,4 @@ class OpMultiplayer():
     OP_KILLPLAYER = "OP_SEND_KILLPLAYER"
     OP_END = "OP_SEND_END"
     OP_EXIT = "OP_SEND_EXIT"
+    OP_SHOOT = "OP_SEND_SHOOT"

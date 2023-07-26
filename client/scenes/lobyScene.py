@@ -12,7 +12,7 @@ class LobyScene(SceneAppendListeiner):
 
         self.Background = self.addObjectsEvents(BasicBackGround()
                                                 .setDimencion(self.__context.getSize())
-                                                .setImage('client/assets/imageMenu.jpg'))
+                                                .setImage('client/assets/space.png'))
         self.EButtonToPartida = self.addObjectsEvents(ButtonText()
                                                    .setSize(25)
                                                    .set_size([250, 40])

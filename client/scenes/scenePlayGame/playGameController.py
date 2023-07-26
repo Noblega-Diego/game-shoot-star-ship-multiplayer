@@ -54,7 +54,7 @@ class Player:
         return dis
 
     def getDisparos(self):
-        d:List[Disparo] = self.__miDisparos
+        d:list[Disparo] = self.__miDisparos
         self.__miDisparos = []
         return d + [Disparo(self,s.get_pos(),s.get_gr()) for s in self.getmShip().getAllShoot()]
 

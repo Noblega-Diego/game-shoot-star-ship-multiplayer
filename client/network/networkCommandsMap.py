@@ -72,8 +72,8 @@ class updateDisparos(CommandNetwork):
     def ejecute(self):
         data = self.getData()
         print("mi data" + str(data))
-        id= data["idPlayer"]
+        id= data["playerId"]
         for player in self.__context.getPartidaContext()["players"]:
             if (player.get_id() == str(id)):
-                player.addShoot(data["shoot"]["gr"], data["shoot"]["pos"])
+                player.addShoot(data["gr"], data["pos"])
 

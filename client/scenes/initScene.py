@@ -16,7 +16,7 @@ class InitScene(SceneAppendListeiner):
         self.__context = GlobalContext()
         self.Background = self.addObjectsEvents(BasicBackGround()
                                                 .setDimencion(self.__context.getSize())
-                                                .setImage('client/assets/space.png'))
+                                                .setImage('client/assets/imageMenu.jpg'))
         self.Etime = self.addObjectsEvents(TimeElement())
         
     def start(self):

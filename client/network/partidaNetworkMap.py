@@ -13,6 +13,7 @@ class NetworkMap(InputMap):
             EventInput("event", OpMultiplayer.OP_ACCEPT, NetworkEvents.EVENT_NETWORK): networkCommandsMap.loadUser(),
             EventInput("event", OpMultiplayer.OP_START, NetworkEvents.EVENT_NETWORK): networkCommandsMap.start(),
             EventInput("event", OpMultiplayer.OP_UPDATEPLAYER, NetworkEvents.EVENT_NETWORK): networkCommandsMap.updatePlayer(),
+            EventInput("event", OpMultiplayer.OP_SHOOT,NetworkEvents.EVENT_NETWORK): networkCommandsMap.updateDisparos(),
         }
 
     def getMapInputs(self) -> dict[EventInput, CommandNetwork]:

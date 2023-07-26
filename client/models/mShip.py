@@ -53,7 +53,7 @@ class MShip():
         return self.__grados
 
     def addShoot(self, gr:int, pos:tuple[int,int]):
-        self.__newShoots.append(MShoot(self,pos,gr))
+        self.__newShoots.append(MShoot(self,gr,pos))
 
     def getAllShoot(self):
         shoots = self.__newShoots
